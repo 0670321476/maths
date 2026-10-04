@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}</style>
+<title>Fiche PBS 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
+<style>
+/* Layout : une colonne de lecture (~68ch), barre de sections collante, encadrés par rôle.
+   Couleurs reprises des figures du cours : rouge = densité, bleu = E(X) ± σ. */
+:root {
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --ink: #17213a;
+  --muted: #59627a;
+  --line: #dde2ec;
+  --density: #c8304a;
+  --density-soft: rgba(200, 48, 74, .14);
+  --mean: #2b55c9;
+  --mean-soft: rgba(43, 85, 201, .09);
+  --trap: #a65d00;
+  --trap-soft: rgba(196, 120, 0, .11);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1421; --surface: #171d2d; --ink: #e5e9f3; --muted: #9aa3ba; --line: #2a3247;
+    --density: #ff6f85; --density-soft: rgba(255, 111, 133, .16);
+    --mean: #87a8ff; --mean-soft: rgba(135, 168, 255, .11);
+    --trap: #f2b35a; --trap-soft: rgba(242, 179, 90, .12);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1421; --surface: #171d2d; --ink: #e5e9f3; --muted: #9aa3ba; --line: #2a3247;
+  --density: #ff6f85; --density-soft: rgba(255, 111, 133, .16);
+  --mean: #87a8ff; --mean-soft: rgba(135, 168, 255, .11);
+  --trap: #f2b35a; --trap-soft: rgba(242, 179, 90, .12);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 0 16px;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 0 72px; }
+
+header.hero { padding-block: 44px 20px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted);
+}
+h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(2.1rem, 6vw, 3.2rem);
+  line-height: 1.05; margin: 10px 0 14px; text-wrap: balance; letter-spacing: -.01em;
+}
+h1 .d { color: var(--density); }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+
+nav.toc {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  margin: 0 -16px; padding: 10px 16px;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+}
+nav.toc::-webkit-scrollbar { display: none; }
+nav.toc a {
+  flex: none; font-size: 13px; text-decoration: none; color: var(--ink);
+  padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+}
+nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--mean); color: var(--mean); outline: none; }
+
+section { padding-top: 40px; scroll-margin-top: 56px; }
+h2 {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; line-height: 1.15;
+  margin: 0 0 6px; text-wrap: balance;
+}
+h2 .num { font-family: var(--font-mono); font-size: .9rem; color: var(--muted); font-weight: 400; margin-right: 8px; vertical-align: 3px; }
+.sub { color: var(--muted); margin: 0 0 18px; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; margin: 26px 0 8px; }
+p { margin: 0 0 12px; max-width: 68ch; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; max-width: 66ch; }
+li { margin-bottom: 5px; }
+strong { font-weight: 600; }
+.small { font-size: 14px; color: var(--muted); }
+
+.box {
+  border-radius: 10px; padding: 14px 16px; margin: 16px 0; min-width: 0;
+}
+.box > :last-child { margin-bottom: 0; }
+.box .tag {
+  display: block; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em;
+  text-transform: uppercase; font-weight: 500; margin-bottom: 6px;
+}
+.key { background: var(--mean-soft); }
+.key .tag { color: var(--mean); }
+.intuition { background: var(--density-soft); }
+.intuition .tag { color: var(--density); }
+.trap { background: var(--trap-soft); }
+.trap .tag { color: var(--trap); }
+
+.essentials { display: grid; gap: 10px; margin-top: 8px; counter-reset: e; }
+.essentials li {
+  list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px 12px 48px; position: relative; margin: 0;
+}
+.essentials li::before {
+  counter-increment: e; content: counter(e);
+  position: absolute; left: 14px; top: 12px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink); color: var(--bg); font: 500 12px/22px var(--font-mono); text-align: center;
+}
+.essentials { padding: 0; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { padding: 10px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--font-mono); font-weight: 500; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 2px 0; }
+mjx-container { color: inherit; }
+
+/* Widgets */
+.widget { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin: 18px 0; }
+.widget-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.widget-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.tabs button {
+  font: 500 13px var(--font-body); padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+}
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tabs button:focus-visible, input[type=range]:focus-visible { outline: 2px solid var(--mean); outline-offset: 2px; }
+.plot { width: 100%; height: auto; display: block; }
+.plot .axis { stroke: var(--muted); stroke-width: 1; }
+.plot .grid { stroke: var(--line); stroke-width: 1; }
+.plot text { fill: var(--muted); font: 11px var(--font-mono); }
+.plot .curve { fill: none; stroke: var(--density); stroke-width: 2.4; }
+.plot .area { fill: var(--density-soft); stroke: none; }
+.plot .msd { stroke: var(--mean); stroke-width: 3; }
+.plot .mtick { stroke: var(--mean); stroke-width: 2; }
+.plot .mlabel { fill: var(--mean); }
+.plot .bar { fill: var(--mean-soft); stroke: var(--mean); stroke-width: 1; }
+.plot .zone { fill: var(--muted); font-size: 12px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+.controls label { display: grid; gap: 2px; font-size: 13.5px; color: var(--muted); }
+.controls label b { color: var(--ink); font-family: var(--font-mono); font-weight: 500; }
+input[type=range] { width: 100%; accent-color: var(--mean); }
+.readout { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-family: var(--font-mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.readout span b { font-weight: 500; color: var(--mean); }
+
+/* Schéma des convergences */
+.impl { display: grid; grid-template-columns: auto auto auto auto auto; align-items: center; gap: 8px; justify-content: start; margin: 16px 0; overflow-x: auto; padding-bottom: 4px; }
+.impl .node { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; font-family: var(--font-mono); font-size: 13px; white-space: nowrap; }
+.impl .stack { display: grid; gap: 10px; }
+.impl .arrow { color: var(--muted); font-size: 20px; }
+
+.recipe ol { counter-reset: none; }
+.recipes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 12px; }
+.recipe { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.recipe h4 { margin: 0 0 8px; font-family: var(--font-display); font-size: 1rem; }
+.recipe ol { padding-left: 18px; font-size: 14.5px; margin: 0; }
+
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">EPITA · Mathématiques S6 · PBS 1 (G. Euvrard)</div>
+    <h1>Probabilités : les variables <span class="d">à densité</span></h1>
+    <p class="lede">Les 36 pages du cours, résumées et réorganisées. Chaque partie donne l'idée, ce qu'il faut retenir et les pièges. Deux petites simulations permettent de voir les lois bouger.</p>
+  </header>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#essentiel">L'essentiel</a>
+    <a href="#pourquoi">1 · Discret vs continu</a>
+    <a href="#repartition">2 · Répartition</a>
+    <a href="#densite">3 · Densité</a>
+    <a href="#lois">4 · Lois usuelles</a>
+    <a href="#esperance">5 · E et Var</a>
+    <a href="#couples">6 · Couples</a>
+    <a href="#convergence">7 · Convergences et TCL</a>
+    <a href="#methodes">Méthodes</a>
+    <a href="#formules">Formulaire</a>
+  </nav>
+
+  <!-- ESSENTIEL -->
+  <section id="essentiel">
+    <h2>L'essentiel en 6 idées</h2>
+    <p class="sub">Si tu ne lis que ça avant le partiel.</p>
+    <ol class="essentials">
+      <li>Quand X peut prendre <strong>toutes les valeurs d'un intervalle</strong>, on ne peut plus additionner des \(P(X=x_n)\). On travaille avec des <strong>intervalles</strong>, et donc avec des <strong>intégrales</strong>.</li>
+      <li>La <strong>fonction de répartition</strong> \(F(x) = P(X \leqslant x)\) suffit à décrire toute la loi. Si F est continue, alors \(P(X=a)=0\) pour tout a : ouvrir ou fermer un intervalle ne change rien.</li>
+      <li>Une <strong>densité</strong> f est une fonction \(\geqslant 0\), d'intégrale totale 1, telle que \(P(a \leqslant X \leqslant b) = \int_a^b f(x)\,dx\). En pratique, \(f = F'\).</li>
+      <li>Trois lois à connaître par cœur : <strong>uniforme</strong>, <strong>exponentielle</strong>, <strong>normale</strong> (densité, E, Var).</li>
+      <li>On passe du discret au continu en remplaçant \(\sum\) par \(\int\) et \(P(X=x_k)\) par \(f(x)\,dx\) : \(E(X)=\int x f(x)\,dx\).</li>
+      <li>Pour une moyenne \(\overline{X}_n\) de n variables i.i.d. : elle tend vers m (<strong>loi des grands nombres</strong>), et pour n grand elle est à peu près normale (<strong>TCL</strong>), d'où \(P\big(|\overline{X}_n - m| \lt 1{,}96\,\sigma/\sqrt n\big) \approx 95\,\%\).</li>
+    </ol>
+  </section>
+
+  <!-- 1 -->
+  <section id="pourquoi">
+    <h2><span class="num">1</span>Discret ou continu, qu'est-ce que ça change ?</h2>
+    <p class="sub">Cours §1–2 · pages 3 à 5</p>
+    <p>Une variable aléatoire est une fonction \(X : \Omega \to \mathbb{R}\). Sa <strong>loi</strong> donne \(P(X \in A)\) pour les ensembles \(A \subset \mathbb{R}\). Jusqu'ici, les variables étaient <strong>discrètes</strong> : on pouvait numéroter leurs valeurs \(x_0, x_1, x_2, \dots\), et il suffisait de connaître chaque \(P(X=x_n)\).</p>
+    <p>Mais beaucoup de grandeurs réelles prennent leurs valeurs dans un <strong>intervalle</strong> : temps d'attente, durée de vie d'un appareil, rythme cardiaque, temps de réponse d'un serveur… Or un intervalle n'est <strong>pas dénombrable</strong> (Cantor, 1874) : on ne peut pas écrire \(P(X\in I)=\sum_n P(X=x_n)\).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Discret</th><th>Continu (à densité)</th></tr></thead>
+        <tbody>
+          <tr><td>Valeurs</td><td>Liste finie ou dénombrable</td><td>Un intervalle de \(\mathbb{R}\)</td></tr>
+          <tr><td>Loi donnée par</td><td>\(P(X=x_n)\) pour chaque n</td><td>Une densité \(f(x)\)</td></tr>
+          <tr><td>\(P(X=a)\)</td><td>Peut être \(\gt 0\)</td><td>Toujours \(0\)</td></tr>
+          <tr><td>\(P(X\in A)\)</td><td>\(\sum_{x_n\in A} P(X=x_n)\)</td><td>\(\int_A f(x)\,dx\)</td></tr>
+          <tr><td>Normalisation</td><td>\(\sum_n P(X=x_n)=1\)</td><td>\(\int_{-\infty}^{+\infty} f(x)\,dx=1\)</td></tr>
+          <tr><td>Espérance</td><td>\(\sum_n x_n\,P(X=x_n)\)</td><td>\(\int x\,f(x)\,dx\)</td></tr>
+          <tr><td>F(x)</td><td>En escalier (discontinue)</td><td>Continue</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="repartition">
+    <h2><span class="num">2</span>Tribu borélienne et fonction de répartition</h2>
+    <p class="sub">Cours §3 · pages 5 à 8</p>
+    <p>Comme on ne peut pas définir \(P(X\in A)\) pour <em>tous</em> les ensembles A, on se limite à une famille raisonnable d'ensembles : une <strong>tribu</strong> \(\Sigma\). C'est une famille qui contient \(\mathbb{R}\), qui est stable par complémentaire et par union dénombrable. Le triplet \((\mathbb{R}, \Sigma, P_X)\) s'appelle un <strong>espace probabilisé</strong>.</p>
+    <p>La <strong>tribu borélienne</strong> est celle engendrée par les intervalles \(]-\infty, x]\). Elle contient tous les intervalles (ouverts, fermés, bornés ou non) : tout ce qui sert en pratique.</p>
+
+    <div class="key">
+      <span class="tag">À retenir · fonction de répartition</span>
+      \[F(x) = P(X \leqslant x)\]
+      <ul>
+        <li>F est <strong>croissante</strong>, avec \(\lim_{-\infty} F = 0\) et \(\lim_{+\infty} F = 1\).</li>
+        <li>\(P(X \gt a) = 1 - F(a)\)</li>
+        <li>\(P(a \lt X \leqslant b) = F(b) - F(a)\)</li>
+        <li>\(P(X=a) = F(a) - \lim_{x\to a^-} F(x)\) : c'est la hauteur du « saut » de F en a.</li>
+      </ul>
+    </div>
+
+    <div class="intuition">
+      <span class="tag">Intuition · pourquoi P(X = a) = 0</span>
+      <p>Si F est continue, elle ne saute nulle part, donc \(P(X=a)=0\). Ça ne veut pas dire que a est impossible. Exemple du cours : un serveur répond en exactement 1,000… s a une probabilité nulle, mais répondre entre \(1-\delta t\) et \(1+\delta t\) a une probabilité non nulle. Il y a simplement « trop » de valeurs pour que chacune pèse quelque chose.</p>
+    </div>
+    <p class="small">Le cours montre aussi une variable « hybride » : F saute en 0 (par exemple 30 % de chance de valoir exactement 0), puis croît continûment. C'est le cas de la distance marchée par une personne un jour donné.</p>
+  </section>
+
+  <!-- 3 -->
+  <section id="densite">
+    <h2><span class="num">3</span>Variable à densité</h2>
+    <p class="sub">Cours §4 · pages 8 à 12</p>
+
+    <div class="key">
+      <span class="tag">Définition</span>
+      <p>f est une densité de X si, pour tout \(a\in\mathbb{R}\) :</p>
+      \[F(a) = \int_{-\infty}^{a} f(x)\,dx \qquad\text{donc}\qquad P(a\leqslant X\leqslant b) = \int_a^b f(x)\,dx = F(b)-F(a)\]
+      <p>Une fonction f est une densité si et seulement si <strong>\(f \geqslant 0\)</strong> et <strong>\(\int_{-\infty}^{+\infty} f = 1\)</strong>.</p>
+    </div>
+    <ul>
+      <li>Si F est dérivable (éventuellement sauf en un nombre fini de points), alors \(f = F'\).</li>
+      <li>On dit <em>une</em> densité et pas <em>la</em> densité : on peut changer f en quelques points sans changer les intégrales.</li>
+    </ul>
+
+    <div class="intuition">
+      <span class="tag">Intuition · f(x) n'est pas une probabilité</span>
+      <p>Découpe l'axe en petits morceaux de largeur \(\delta x\). La probabilité que X tombe dans \([x, x+\delta x]\) vaut environ <strong>\(f(x)\,\delta x\)</strong>. On approche donc X par une variable discrète \(X'\) avec \(P(X'=x_k) = f(x_k)\,\delta x\). C'est le fil conducteur de tout le cours : <strong>presque chaque formule continue est une somme discrète où \(\delta x \to 0\)</strong>. Au passage, f(x) peut valoir plus que 1 ; seule l'aire compte.</p>
+    </div>
+
+    <h3>Densité de Y = φ(X)</h3>
+    <div class="key">
+      <span class="tag">Formule à connaître · Y = αX + β (α ≠ 0)</span>
+      \[f_Y(x) = \frac{1}{|\alpha|}\, f_X\!\left(\frac{x-\beta}{\alpha}\right)\]
+      <p>Graphiquement : <strong>+β décale</strong> la courbe, <strong>×α l'étire</strong> en largeur d'un facteur α et l'écrase en hauteur d'un facteur 1/α. L'aire reste 1.</p>
+    </div>
+    <p>Cas général (φ strictement monotone et dérivable) : \(f_Y(x) = \left|\dfrac{1}{\varphi'(\varphi^{-1}(x))}\right| f_X(\varphi^{-1}(x))\). En pratique, le cours conseille de <strong>repasser par F</strong>, comme dans les exemples suivants.</p>
+
+    <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+      <span class="tag" style="color:var(--muted)">Exemple · Y = X²</span>
+      <p>Si \(x\lt 0\), \(P(X^2\leqslant x)=0\). Sinon \(X^2 \leqslant x \iff -\sqrt x \leqslant X \leqslant \sqrt x\), donc :</p>
+      \[F_Y(x) = F(\sqrt x) - F(-\sqrt x) \;\Longrightarrow\; f_Y(x) = \frac{1}{2\sqrt x}\Big[f(\sqrt x) + f(-\sqrt x)\Big] \quad (x\gt 0)\]
+      <p class="small">Même méthode pour \(Y=-2X+3\) : \(F_Y(x) = 1 - F\big(\tfrac{3-x}{2}\big)\), donc \(f_Y(x) = \tfrac12 f\big(\tfrac{3-x}{2}\big)\).</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="lois">
+    <h2><span class="num">4</span>Les trois lois usuelles</h2>
+    <p class="sub">Cours §5 et §7 · pages 13 à 15 et 18 à 22</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Loi</th><th>Densité f(x)</th><th>F(x)</th><th>E(X)</th><th>Var(X)</th></tr></thead>
+        <tbody>
+          <tr><td>\(\mathrm{Unif}(a,b)\)</td><td>\(\frac{1}{b-a}\) sur \([a,b]\), 0 sinon</td><td>\(\frac{x-a}{b-a}\) sur \([a,b]\)</td><td>\(\frac{a+b}{2}\)</td><td>\(\frac{(b-a)^2}{12}\)</td></tr>
+          <tr><td>\(\mathrm{Exp}(\lambda)\)</td><td>\(\lambda e^{-\lambda x}\) pour \(x\geqslant 0\)</td><td>\(1-e^{-\lambda x}\) pour \(x\geqslant0\)</td><td>\(\frac{1}{\lambda}\)</td><td>\(\frac{1}{\lambda^2}\)</td></tr>
+          <tr><td>\(\mathcal{N}(m,\sigma^2)\)</td><td>\(\frac{1}{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-m)^2}{2\sigma^2}}\)</td><td>\(\Phi\!\left(\frac{x-m}{\sigma}\right)\)</td><td>\(m\)</td><td>\(\sigma^2\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="widget" id="lawWidget">
+      <div class="widget-head">
+        <span class="widget-title">Fais varier les paramètres</span>
+        <div class="tabs" role="group" aria-label="Choisir une loi">
+          <button type="button" data-law="unif" aria-pressed="true">Uniforme</button>
+          <button type="button" data-law="exp" aria-pressed="false">Exponentielle</button>
+          <button type="button" data-law="norm" aria-pressed="false">Normale</button>
+        </div>
+      </div>
+      <svg class="plot" id="lawPlot" viewBox="0 0 640 250" role="img" aria-label="Densité de la loi choisie"></svg>
+      <div class="controls" id="lawControls"></div>
+      <div class="readout" id="lawReadout"></div>
+      <p class="small" style="margin:8px 0 0">En rouge, la densité. En bleu sur l'axe, le segment de E(X) − σ à E(X) + σ (même convention que les figures du cours).</p>
+    </div>
+
+    <h3>Uniforme</h3>
+    <ul>
+      <li>Si \(X\rightsquigarrow\mathrm{Unif}(a,b)\), alors \(Z=\frac{X-a}{b-a}\rightsquigarrow\mathrm{Unif}(0,1)\).</li>
+      <li>À l'inverse, \(X = a + (b-a)Z\). C'est ce que tu fais en code avec <code>rand()</code>.</li>
+    </ul>
+
+    <h3>Exponentielle</h3>
+    <ul>
+      <li>Modélise une durée de vie ou un temps d'attente.</li>
+      <li>\(X\rightsquigarrow\mathrm{Exp}(\lambda) \iff \lambda X\rightsquigarrow\mathrm{Exp}(1)\).</li>
+    </ul>
+
+    <h3>Normale</h3>
+    <ul>
+      <li>\(aX+b \rightsquigarrow \mathcal{N}(am+b,\ a^2\sigma^2)\).</li>
+      <li><strong>Centrer-réduire</strong> : \(Z = \frac{X-m}{\sigma} \rightsquigarrow \mathcal{N}(0,1)\). À l'inverse, \(X = m+\sigma Z\).</li>
+      <li>Si X et Y sont <strong>indépendantes</strong> et normales : \(X+Y \rightsquigarrow \mathcal{N}(m_1+m_2,\ \sigma_1^2+\sigma_2^2)\).</li>
+      <li>\(\Phi\) (la répartition de \(\mathcal{N}(0,1)\)) n'a pas de formule : on utilise une table ou un ordinateur, et \(F_X(x) = \Phi\big(\frac{x-m}{\sigma}\big)\).</li>
+    </ul>
+    <div class="key">
+      <span class="tag">La valeur à connaître</span>
+      \[P(-1{,}96 \leqslant Z \leqslant 1{,}96) = 95\,\% \qquad (\text{on peut arrondir } 1{,}96 \approx 2)\]
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="esperance">
+    <h2><span class="num">5</span>Espérance et variance</h2>
+    <p class="sub">Cours §6–7 · pages 16 à 22</p>
+
+    <div class="key">
+      <span class="tag">Définitions</span>
+      \[E(X) = \int_{-\infty}^{+\infty} x\,f(x)\,dx \qquad \mathrm{Var}(X) = E\big((X-E(X))^2\big) = \int_{-\infty}^{+\infty}(x-E(X))^2 f(x)\,dx \qquad \sigma(X)=\sqrt{\mathrm{Var}(X)}\]
+      <p><strong>Théorème de transfert</strong> : \(E(\varphi(X)) = \int \varphi(x)\,f(x)\,dx\), si l'intégrale converge absolument. Si une intégrale diverge, l'espérance ou la variance n'existe pas.</p>
+    </div>
+
+    <div class="intuition">
+      <span class="tag">Intuition</span>
+      <p><strong>E(X)</strong> est le centre de gravité de la courbe, comme une tige dont la masse en x vaut f(x). C'est aussi la limite de la moyenne d'un grand nombre de tirages.</p>
+      <p><strong>Var(X)</strong> mesure l'étalement autour de E(X). Si la loi met plus de poids loin de E(X), la variance augmente.</p>
+    </div>
+
+    <h3>Propriétés</h3>
+    <ul>
+      <li>\(E(\alpha X+\beta) = \alpha E(X)+\beta\) et \(E(X+Y) = E(X)+E(Y)\) (toujours vrai).</li>
+      <li>\(\mathrm{Var}(X) = E(X^2) - E(X)^2\) : <strong>la formule de calcul</strong>, presque toujours plus rapide.</li>
+      <li>\(\mathrm{Var}(\alpha X+\beta) = \alpha^2\,\mathrm{Var}(X)\), donc \(\sigma(\alpha X+\beta) = |\alpha|\,\sigma(X)\).</li>
+      <li>\(\mathrm{Var}(X+Y) = \mathrm{Var}(X)+\mathrm{Var}(Y)\) <strong>seulement si X et Y sont indépendantes</strong>.</li>
+    </ul>
+    <div class="trap">
+      <span class="tag">Piège classique</span>
+      <p>Var(X+Y) = Var(X) + Var(Y) est faux en général. Contre-exemple : Y = −X. Alors X + Y = 0, donc Var(X + Y) = 0, alors que Var(X) + Var(Y) = 2 Var(X).</p>
+    </div>
+
+    <h3>Inégalité de Tchebychev</h3>
+    \[P\big(|X-E(X)| \gt \varepsilon\big) \leqslant \frac{\mathrm{Var}(X)}{\varepsilon^2} \qquad\text{soit, avec } \varepsilon = k\sigma :\quad P\big(|X-E(X)|\gt k\sigma\big)\leqslant \frac{1}{k^2}\]
+    <p>Elle marche pour n'importe quelle loi. Par exemple, avec \(k\approx4{,}5\), X est dans \(E(X)\pm k\sigma\) avec une probabilité d'au moins 95 %.</p>
+
+    <h3>Astuce de calcul utilisée dans tout le cours</h3>
+    <p>Pour trouver E et Var d'une loi usuelle, on calcule d'abord pour la version « standard » Z, puis on revient à X avec les propriétés de \(\alpha Z+\beta\) :</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Loi</th><th>Variable simple</th><th>Calcul clé</th><th>Retour à X</th></tr></thead>
+        <tbody>
+          <tr><td>Uniforme</td><td>\(Z\rightsquigarrow\mathrm{Unif}(0,1)\)</td><td>\(E(Z)=\tfrac12,\ E(Z^2)=\tfrac13,\ \mathrm{Var}=\tfrac1{12}\)</td><td>\(X=a+(b-a)Z\)</td></tr>
+          <tr><td>Exponentielle</td><td>\(Z=\lambda X\rightsquigarrow\mathrm{Exp}(1)\)</td><td>IPP : \(\int_0^\infty xe^{-x}dx=1,\ \int_0^\infty x^2e^{-x}dx=2\)</td><td>\(X=Z/\lambda\)</td></tr>
+          <tr><td>Normale</td><td>\(Z\rightsquigarrow\mathcal{N}(0,1)\)</td><td>\(E(Z)=0\) (forme \(-u'e^u\)), Var par IPP \(=1\)</td><td>\(X=m+\sigma Z\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="couples">
+    <h2><span class="num">6</span>Lois à deux variables</h2>
+    <p class="sub">Cours §8 · pages 22 à 27</p>
+    <p>Même démarche qu'en dimension 1, mais avec des rectangles au lieu d'intervalles.</p>
+
+    <div class="key">
+      <span class="tag">Couple (X, Y)</span>
+      <ul>
+        <li><strong>Répartition</strong> : \(F(x,y) = P(X\leqslant x \text{ et } Y\leqslant y)\)</li>
+        <li><strong>Rectangle</strong> : \(P(a\lt X\leqslant b,\ c\lt Y\leqslant d) = F(b,d)-F(b,c)-F(a,d)+F(a,c)\)</li>
+        <li><strong>Densité jointe</strong> : \(f(x,y) = \dfrac{\partial^2 F}{\partial x\,\partial y}\), et \(P((X,Y)\in I) = \iint_I f(x,y)\,dx\,dy\). C'est un <em>volume</em> sous la surface.</li>
+        <li><strong>Marginales</strong> : \(f_X(x) = \int_{-\infty}^{+\infty} f(x,y)\,dy\) et \(f_Y(y) = \int_{-\infty}^{+\infty} f(x,y)\,dx\). On « écrase » le couple sur un axe.</li>
+        <li><strong>Somme</strong> : \(f_{X+Y}(z) = \int_{-\infty}^{+\infty} f(z-y,\,y)\,dy\). On somme le long de la droite \(x+y=z\).</li>
+      </ul>
+    </div>
+
+    <div class="key">
+      <span class="tag">Indépendance</span>
+      <p>X et Y sont <strong>indépendantes</strong> si \(f(x,y) = f_X(x)\,f_Y(y)\) pour tout (x, y). Conséquences :</p>
+      <ul>
+        <li>\(P(X\in[a,b] \text{ et } Y\in[c,d]) = P(X\in[a,b])\times P(Y\in[c,d])\)</li>
+        <li>La densité de X + Y est la <strong>convolution</strong> : \(f_{X+Y}(z) = \int f_X(z-y)\,f_Y(y)\,dy = (f_X * f_Y)(z)\)</li>
+      </ul>
+    </div>
+
+    <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+      <span class="tag" style="color:var(--muted)">Exercice corrigé du cours, en résumé</span>
+      <p>\(f(x,y) = \frac14\) sur \([1,3]\times[0,2]\), 0 sinon.</p>
+      <ol>
+        <li>Marginales : \(f_X = \frac12\) sur [1,3], donc \(X\rightsquigarrow\mathrm{Unif}(1,3)\). De même \(Y\rightsquigarrow\mathrm{Unif}(0,2)\).</li>
+        <li>\(\frac12\times\frac12 = \frac14 = f(x,y)\) sur le rectangle : X et Y sont <strong>indépendantes</strong>.</li>
+        <li>Convolution : on regarde où la droite \(x+y=z\) coupe le rectangle. Quatre cas : \(z\lt1\), \(1\leqslant z\leqslant3\), \(3\leqslant z\leqslant5\), \(z\gt5\). On obtient un <strong>triangle</strong> :</li>
+      </ol>
+      \[f_{X+Y}(z) = \begin{cases} \frac{z-1}{4} & z\in[1,3]\\[2pt] \frac{5-z}{4} & z\in[3,5]\\[2pt] 0 & \text{sinon}\end{cases}\]
+      <p class="small">Réflexe : pour une convolution, dessine le support et la droite \(x+y=z\), puis découpe en cas.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="convergence">
+    <h2><span class="num">7</span>Suites de variables : convergences, LGN, TCL</h2>
+    <p class="sub">Cours §9 · pages 27 à 36</p>
+    <p>Le cadre est presque toujours le même : \(X_1, X_2, \dots\) sont <strong>i.i.d.</strong> (indépendantes et de même loi), d'espérance m et de variance \(\sigma^2\). On étudie leur moyenne :</p>
+    \[\overline{X}_n = \frac{X_1+\dots+X_n}{n} \qquad E(\overline{X}_n) = m \qquad \mathrm{Var}(\overline{X}_n) = \frac{\sigma^2}{n}\]
+
+    <h3>Les 4 types de convergence</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Définition</th><th>En clair</th></tr></thead>
+        <tbody>
+          <tr><td>Presque sûre \(\xrightarrow{ps}\)</td><td>\(P\big(\lim X_n = Y\big) = 1\)</td><td>Pour presque chaque tirage, la suite de nombres converge (pas forcément à la même vitesse d'un tirage à l'autre).</td></tr>
+          <tr><td>En probabilité \(\xrightarrow{prob}\)</td><td>\(\forall\varepsilon\gt0,\ P(|X_n-Y|\gt\varepsilon)\to0\)</td><td>Être loin de Y devient de plus en plus improbable.</td></tr>
+          <tr><td>\(L_2\) \(\xrightarrow{L_2}\)</td><td>\(E\big((X_n-Y)^2\big)\to 0\)</td><td>L'écart quadratique moyen tend vers 0.</td></tr>
+          <tr><td>En loi \(\xrightarrow{loi}\)</td><td>\(P(X_n\in[a,b])\to P(Y\in[a,b])\)</td><td>La <em>loi</em> de \(X_n\) ressemble à celle de Y. Ça ne dit pas que \(X_n\) est proche de Y. Sert à approcher des calculs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-bottom:4px"><strong>Qui implique qui :</strong></p>
+    <div class="impl" aria-label="L2 et presque sûre impliquent probabilité, qui implique loi">
+      <div class="stack"><span class="node">L₂</span><span class="node">presque sûre</span></div>
+      <span class="arrow">⇒</span>
+      <span class="node">probabilité</span>
+      <span class="arrow">⇒</span>
+      <span class="node">loi</span>
+    </div>
+
+    <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+      <span class="tag" style="color:var(--muted)">Exemple que le cours demande de savoir refaire</span>
+      <ol>
+        <li>\(E\big((\overline{X}_n-m)^2\big) = \mathrm{Var}(\overline{X}_n) = \frac{\sigma^2}{n} \to 0\), donc \(\overline{X}_n \xrightarrow{L_2} m\).</li>
+        <li>Tchebychev : \(P(|\overline{X}_n-m|\geqslant\varepsilon) \leqslant \frac{\sigma^2}{n\varepsilon^2} \to 0\), donc \(\overline{X}_n \xrightarrow{prob} m\).</li>
+      </ol>
+    </div>
+
+    <h3>Les trois grands théorèmes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Théorème</th><th>Hypothèses</th><th>Conclusion</th></tr></thead>
+        <tbody>
+          <tr><td>Loi faible des grands nombres</td><td>Les \(X_i\) ont une variance et sont <strong>non corrélées</strong> deux à deux</td><td>\(\overline{X}_n \xrightarrow{prob} m\)</td></tr>
+          <tr><td>Loi forte des grands nombres</td><td>\(E|X_i|\) existe et les \(X_i\) sont indépendantes deux à deux</td><td>\(\overline{X}_n \xrightarrow{ps} m\)</td></tr>
+          <tr><td>Théorème central limite</td><td>Les \(X_i\) ont une variance \(\sigma^2\) et sont indépendantes deux à deux</td><td>\(Z_n = \dfrac{\overline{X}_n - m}{\sigma/\sqrt n} \xrightarrow{loi} \mathcal{N}(0,1)\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">Non corrélées : \(E\big((X_i-E X_i)(X_j-E X_j)\big)=0\). C'est plus faible que l'indépendance.</p>
+
+    <div class="intuition">
+      <span class="tag">Ce qui rend le TCL magique</span>
+      <p>La conclusion <strong>ne dépend pas de la loi des \(X_i\)</strong>. Quelle que soit la loi de départ, une somme de beaucoup de petits effets indépendants devient normale. C'est pour ça que la loi normale apparaît partout dans la vraie vie.</p>
+    </div>
+
+    <div class="widget" id="cltWidget">
+      <div class="widget-head">
+        <span class="widget-title">Le TCL en direct : Bernoulli(p) → normale</span>
+      </div>
+      <svg class="plot" id="cltPlot" viewBox="0 0 640 250" role="img" aria-label="Histogramme de Z_n comparé à la densité normale"></svg>
+      <div class="controls">
+        <label for="cltN">Nombre de variables n <b id="cltNv">10</b><input type="range" id="cltN" min="1" max="100" step="1" value="10"></label>
+        <label for="cltP">Paramètre p <b id="cltPv">0,30</b><input type="range" id="cltP" min="0.05" max="0.95" step="0.05" value="0.3"></label>
+      </div>
+      <div class="readout" id="cltReadout"></div>
+      <p class="small" style="margin:8px 0 0">Barres bleues : la loi exacte de \(Z_n = \frac{S_n - np}{\sqrt{np(1-p)}}\) avec \(S_n\rightsquigarrow B(n,p)\). Courbe rouge : \(\mathcal{N}(0,1)\). C'est la figure 14 du cours. Monte n pour voir les barres épouser la courbe.</p>
+    </div>
+
+    <h3>L'intervalle de prédiction à 95 %</h3>
+    <p>Comme \(P(-1{,}96\leqslant Z\leqslant1{,}96)=0{,}95\), le TCL donne, pour n grand :</p>
+    \[P\left(m - 1{,}96\,\frac{\sigma}{\sqrt n} \lt \overline{X}_n \lt m + 1{,}96\,\frac{\sigma}{\sqrt n}\right) \approx 0{,}95\]
+    <p>L'intervalle est centré sur m et se resserre en \(1/\sqrt n\) : pour le diviser par 2, il faut 4 fois plus de tirages.</p>
+
+    <h3>Applications du cours</h3>
+    <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+      <span class="tag" style="color:var(--muted)">Binomiale</span>
+      <p>Les \(X_i\) suivent une loi de Bernoulli(p), avec \(E=p\) et \(\mathrm{Var}=p(1-p)\). Donc \(S_n = \sum X_i\rightsquigarrow B(n,p)\). Pour \(n\geqslant 30\), on approche \(\frac{S_n-np}{\sqrt{np(1-p)}}\) par \(\mathcal{N}(0,1)\) :</p>
+      \[P\left(p-1{,}96\sqrt{\tfrac{p(1-p)}{n}} \lt \overline{X}_n \lt p+1{,}96\sqrt{\tfrac{p(1-p)}{n}}\right)\approx 0{,}95\]
+    </div>
+    <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+      <span class="tag" style="color:var(--muted)">Venise qui s'enfonce</span>
+      <p>Baisse annuelle \(\delta X\) i.i.d., avec \(E=1\) mm et \(\mathrm{Var}=\frac19\). Sur 100 ans : \(E(S_{100})=100\), \(\mathrm{Var}(S_{100})=\frac{100}{9}\), donc \(\sigma = \frac{10}{3}\).</p>
+      \[P\left(100-1{,}96\cdot\tfrac{10}{3} \leqslant S_{100}\leqslant 100+1{,}96\cdot\tfrac{10}{3}\right)\approx0{,}95 \;\Longrightarrow\; S_{100}\in[93{,}5\ ;\ 106{,}5] \text{ mm à 95 \%}\]
+    </div>
+  </section>
+
+  <!-- METHODES -->
+  <section id="methodes">
+    <h2>Méthodes types</h2>
+    <p class="sub">Les recettes qui reviennent en exercice.</p>
+    <div class="recipes">
+      <div class="recipe">
+        <h4>Vérifier que f est une densité</h4>
+        <ol>
+          <li>\(f(x)\geqslant0\) partout.</li>
+          <li>Découpe \(\int_{-\infty}^{+\infty}\) selon les morceaux de f.</li>
+          <li>Montre que le total vaut 1.</li>
+        </ol>
+      </div>
+      <div class="recipe">
+        <h4>Trouver la densité de Y = φ(X)</h4>
+        <ol>
+          <li>Écris \(F_Y(x)=P(\varphi(X)\leqslant x)\).</li>
+          <li>Isole X (attention au sens si φ décroît, aux racines si \(X^2\)).</li>
+          <li>Exprime le résultat avec \(F_X\).</li>
+          <li>Dérive : \(f_Y = F_Y'\) (dérivée composée).</li>
+        </ol>
+      </div>
+      <div class="recipe">
+        <h4>Calculer E(X) et Var(X)</h4>
+        <ol>
+          <li>\(E(X)=\int x f(x)\,dx\).</li>
+          <li>\(E(X^2)=\int x^2 f(x)\,dx\) (transfert).</li>
+          <li>\(\mathrm{Var}=E(X^2)-E(X)^2\).</li>
+          <li>Si possible, passe par la variable standard Z.</li>
+        </ol>
+      </div>
+      <div class="recipe">
+        <h4>Appliquer le TCL</h4>
+        <ol>
+          <li>Repère des \(X_i\) i.i.d. et calcule m et \(\sigma^2\).</li>
+          <li>Pour une somme : \(E(S_n)=nm\), \(\mathrm{Var}(S_n)=n\sigma^2\).</li>
+          <li>Centre-réduis : \(Z_n=\frac{S_n-nm}{\sigma\sqrt n}\approx\mathcal{N}(0,1)\).</li>
+          <li>Utilise \(\pm1{,}96\) et isole \(S_n\) (ou \(\overline{X}_n\)).</li>
+        </ol>
+      </div>
+      <div class="recipe">
+        <h4>Densité de X + Y</h4>
+        <ol>
+          <li>Vérifie l'indépendance : \(f=f_Xf_Y\) ?</li>
+          <li>\(f_{X+Y}(z)=\int f_X(z-y)f_Y(y)\,dy\).</li>
+          <li>Trouve où l'intégrande est non nulle.</li>
+          <li>Découpe en cas selon z (dessin du support).</li>
+        </ol>
+      </div>
+      <div class="recipe">
+        <h4>Calculer P(a ≤ X ≤ b) pour une normale</h4>
+        <ol>
+          <li>Centre-réduis : \(\frac{a-m}{\sigma}\leqslant Z\leqslant\frac{b-m}{\sigma}\).</li>
+          <li>\(=\Phi\big(\frac{b-m}{\sigma}\big)-\Phi\big(\frac{a-m}{\sigma}\big)\).</li>
+          <li>Lis Φ dans la table (et \(\Phi(-x)=1-\Phi(x)\)).</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE -->
+  <section id="formules">
+    <h2>Formulaire express</h2>
+    <p class="sub">À relire juste avant l'épreuve.</p>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr><td>Répartition</td><td>\(F(x)=P(X\leqslant x)=\int_{-\infty}^x f(t)\,dt\)</td></tr>
+          <tr><td>Intervalle</td><td>\(P(a\leqslant X\leqslant b)=F(b)-F(a)=\int_a^b f\)</td></tr>
+          <tr><td>Densité</td><td>\(f\geqslant0,\ \int f=1,\ f=F'\)</td></tr>
+          <tr><td>Affine</td><td>\(f_{\alpha X+\beta}(x)=\frac1{|\alpha|}f_X\big(\frac{x-\beta}{\alpha}\big)\)</td></tr>
+          <tr><td>Espérance</td><td>\(E(X)=\int xf(x)\,dx,\quad E(\varphi(X))=\int\varphi(x)f(x)\,dx\)</td></tr>
+          <tr><td>Variance</td><td>\(\mathrm{Var}(X)=E(X^2)-E(X)^2,\quad \mathrm{Var}(\alpha X+\beta)=\alpha^2\mathrm{Var}(X)\)</td></tr>
+          <tr><td>Tchebychev</td><td>\(P(|X-E(X)|\gt\varepsilon)\leqslant\frac{\mathrm{Var}(X)}{\varepsilon^2}\)</td></tr>
+          <tr><td>Marginale</td><td>\(f_X(x)=\int f(x,y)\,dy\)</td></tr>
+          <tr><td>Indépendance</td><td>\(f(x,y)=f_X(x)f_Y(y)\)</td></tr>
+          <tr><td>Somme indép.</td><td>\(f_{X+Y}=f_X*f_Y,\quad \mathrm{Var}(X+Y)=\mathrm{Var}X+\mathrm{Var}Y\)</td></tr>
+          <tr><td>Moyenne</td><td>\(E(\overline{X}_n)=m,\quad\mathrm{Var}(\overline{X}_n)=\frac{\sigma^2}{n}\)</td></tr>
+          <tr><td>TCL</td><td>\(\frac{\overline{X}_n-m}{\sigma/\sqrt n}\xrightarrow{loi}\mathcal{N}(0,1)\)</td></tr>
+          <tr><td>95 %</td><td>\(P(|Z|\leqslant1{,}96)=0{,}95\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Résumé du support « Probabilités et statistiques, PBS 1 » (Guillaume Euvrard, EPITA, janvier 2023). Le cours original reste la référence, notamment pour les démonstrations complètes et les figures.
+  </footer>
+</div>
+
+<script>
+(function () {
+  const W = 640, H = 250, PAD = { l: 38, r: 14, t: 14, b: 34 };
+  const fmt = (v, d = 2) => v.toFixed(d).replace('.', ',');
+
+  function scaler(xr, yr) {
+    const sx = x => PAD.l + (x - xr[0]) / (xr[1] - xr[0]) * (W - PAD.l - PAD.r);
+    const sy = y => H - PAD.b - (y - yr[0]) / (yr[1] - yr[0]) * (H - PAD.t - PAD.b);
+    return { sx, sy };
+  }
+  function axes(xr, yr, yTicks) {
+    const { sx, sy } = scaler(xr, yr);
+    let s = '';
+    yTicks.forEach(t => {
+      s += `<line class="grid" x1="${PAD.l}" x2="${W - PAD.r}" y1="${sy(t)}" y2="${sy(t)}"/>`;
+      s += `<text x="${PAD.l - 6}" y="${sy(t) + 4}" text-anchor="end">${String(t).replace('.', ',')}</text>`;
+    });
+    s += `<line class="axis" x1="${PAD.l}" x2="${W - PAD.r}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+    for (let x = Math.ceil(xr[0]); x <= Math.floor(xr[1]); x++) {
+      s += `<line class="axis" x1="${sx(x)}" x2="${sx(x)}" y1="${sy(0)}" y2="${sy(0) + 4}"/>`;
+      s += `<text x="${sx(x)}" y="${sy(0) + 17}" text-anchor="middle">${x}</text>`;
+    }
+    return s;
+  }
+  function curve(fn, xr, yr, fillRange) {
+    const { sx, sy } = scaler(xr, yr);
+    const N = 900, pts = [];
+    for (let i = 0; i <= N; i++) {
+      const x = xr[0] + (xr[1] - xr[0]) * i / N;
+      pts.push([x, Math.min(fn(x), yr[1] * 1.02)]);
+    }
+    const d = pts.map((p, i) => (i ? 'L' : 'M') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1)).join('');
+    let area = '';
+    if (fillRange) {
+      const sel = pts.filter(p => p[0] >= fillRange[0] && p[0] <= fillRange[1]);
+      if (sel.length) {
+        area = `<path class="area" d="M${sx(sel[0][0])} ${sy(0)}` + sel.map(p => `L${sx(p[0]).toFixed(1)} ${sy(p[1]).toFixed(1)}`).join('') + `L${sx(sel[sel.length - 1][0])} ${sy(0)}Z"/>`;
+      }
+    }
+    return area + `<path class="curve" d="${d}"/>`;
+  }
+  function meanSd(E, sd, xr, yr) {
+    const { sx, sy } = scaler(xr, yr);
+    const y = sy(0) - 6;
+    const a = Math.max(xr[0], E - sd), b = Math.min(xr[1], E + sd);
+    return `<line class="msd" x1="${sx(a)}" x2="${sx(b)}" y1="${y}" y2="${y}"/>` +
+      `<line class="mtick" x1="${sx(E)}" x2="${sx(E)}" y1="${y - 7}" y2="${y + 7}"/>` +
+      `<text class="mlabel" x="${sx(E)}" y="${y - 11}" text-anchor="middle">E(X)</text>`;
+  }
+
+  /* ---------- Lois usuelles ---------- */
+  const laws = {
+    unif: {
+      xr: [-1, 6], yr: [0, 2.1], yt: [0, 0.5, 1, 1.5, 2],
+      params: [
+        { k: 'a', label: 'Borne a', min: -0.5, max: 3, step: 0.1, v: 0.5 },
+        { k: 'b', label: 'Borne b', min: 0.8, max: 5.5, step: 0.1, v: 3 }
+      ],
+      fix(p) { if (p.b < p.a + 0.5) p.b = +(p.a + 0.5).toFixed(1); },
+      f: p => x => (x >= p.a && x <= p.b) ? 1 / (p.b - p.a) : 0,
+      E: p => (p.a + p.b) / 2, V: p => (p.b - p.a) ** 2 / 12,
+      fill: p => [p.a, p.b]
+    },
+    exp: {
+      xr: [-0.5, 6], yr: [0, 3.1], yt: [0, 1, 2, 3],
+      params: [{ k: 'l', label: 'Paramètre λ', min: 0.3, max: 3, step: 0.1, v: 1 }],
+      f: p => x => x >= 0 ? p.l * Math.exp(-p.l * x) : 0,
+      E: p => 1 / p.l, V: p => 1 / (p.l * p.l),
+      fill: () => [0, 6]
+    },
+    norm: {
+      xr: [-5, 5], yr: [0, 1.05], yt: [0, 0.25, 0.5, 0.75, 1],
+      params: [
+        { k: 'm', label: 'Moyenne m', min: -2, max: 2, step: 0.1, v: 0 },
+        { k: 's', label: 'Écart-type σ', min: 0.4, max: 2, step: 0.05, v: 1 }
+      ],
+      f: p => x => Math.exp(-((x - p.m) ** 2) / (2 * p.s * p.s)) / (p.s * Math.sqrt(2 * Math.PI)),
+      E: p => p.m, V: p => p.s * p.s,
+      fill: p => [p.m - 1.96 * p.s, p.m + 1.96 * p.s]
+    }
+  };
+  const state = {};
+  Object.entries(laws).forEach(([k, L]) => { state[k] = {}; L.params.forEach(q => state[k][q.k] = q.v); });
+  let current = 'unif';
+
+  const plot = document.getElementById('lawPlot');
+  const controls = document.getElementById('lawControls');
+  const readout = document.getElementById('lawReadout');
+
+  function buildControls() {
+    const L = laws[current];
+    controls.innerHTML = L.params.map(q =>
+      `<label for="p-${current}-${q.k}">${q.label} <b id="v-${current}-${q.k}">${fmt(state[current][q.k])}</b>` +
+      `<input type="range" id="p-${current}-${q.k}" min="${q.min}" max="${q.max}" step="${q.step}" value="${state[current][q.k]}"></label>`
+    ).join('');
+    L.params.forEach(q => {
+      document.getElementById(`p-${current}-${q.k}`).addEventListener('input', e => {
+        state[current][q.k] = parseFloat(e.target.value);
+        drawLaw();
+      });
+    });
+  }
+  function drawLaw() {
+    const L = laws[current], p = state[current];
+    if (L.fix) L.fix(p);
+    L.params.forEach(q => {
+      const inp = document.getElementById(`p-${current}-${q.k}`);
+      if (inp && parseFloat(inp.value) !== p[q.k]) inp.value = p[q.k];
+      const lab = document.getElementById(`v-${current}-${q.k}`);
+      if (lab) lab.textContent = fmt(p[q.k]);
+    });
+    const E = L.E(p), V = L.V(p), sd = Math.sqrt(V);
+    let s = axes(L.xr, L.yr, L.yt) + curve(L.f(p), L.xr, L.yr, L.fill(p)) + meanSd(E, sd, L.xr, L.yr);
+    if (current === 'norm') {
+      const { sx, sy } = scaler(L.xr, L.yr);
+      const peak = 1 / (p.s * Math.sqrt(2 * Math.PI));
+      s += `<text class="zone" x="${sx(p.m)}" y="${Math.max(PAD.t + 12, sy(peak * 0.45))}" text-anchor="middle">95 %</text>`;
+    }
+    plot.innerHTML = s;
+    let extra = '';
+    if (current === 'norm') extra = `<span>zone colorée : [m − 1,96σ ; m + 1,96σ] = [${fmt(p.m - 1.96 * p.s)} ; ${fmt(p.m + 1.96 * p.s)}]</span>`;
+    if (current === 'unif') extra = `<span>hauteur 1/(b − a) = <b>${fmt(1 / (p.b - p.a))}</b></span>`;
+    if (current === 'exp') extra = `<span>f(0) = λ = <b>${fmt(p.l)}</b></span>`;
+    readout.innerHTML = `<span>E(X) = <b>${fmt(E)}</b></span><span>Var(X) = <b>${fmt(V)}</b></span><span>σ = <b>${fmt(sd)}</b></span>${extra}`;
+  }
+  document.querySelectorAll('#lawWidget .tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      current = btn.dataset.law;
+      document.querySelectorAll('#lawWidget .tabs button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      buildControls(); drawLaw();
+    });
+  });
+  buildControls(); drawLaw();
+
+  /* ---------- TCL ---------- */
+  const cP = document.getElementById('cltPlot');
+  const nIn = document.getElementById('cltN'), pIn = document.getElementById('cltP');
+  const cRead = document.getElementById('cltReadout');
+  const phi = x => Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI);
+  function drawCLT() {
+    const n = parseInt(nIn.value, 10), p = parseFloat(pIn.value);
+    document.getElementById('cltNv').textContent = n;
+    document.getElementById('cltPv').textContent = fmt(p);
+    const pmf = new Array(n + 1);
+    pmf[0] = Math.pow(1 - p, n);
+    for (let k = 0; k < n; k++) pmf[k + 1] = pmf[k] * (n - k) / (k + 1) * p / (1 - p);
+    const s = Math.sqrt(n * p * (1 - p)), w = 1 / s;
+    const bars = pmf.map((q, k) => ({ z: (k - n * p) / s, h: q / w, q }));
+    const maxH = Math.max(...bars.map(b => b.h));
+    const xr = [-4, 4], yr = [0, Math.max(0.5, Math.ceil(maxH * 10 + 0.5) / 10)];
+    const yt = []; const stepY = yr[1] > 1 ? 0.5 : 0.1;
+    for (let t = 0; t <= yr[1] + 1e-9; t += stepY) yt.push(+t.toFixed(1));
+    const { sx, sy } = scaler(xr, yr);
+    let svg = axes(xr, yr, yt);
+    bars.forEach(b => {
+      const x0 = Math.max(xr[0], b.z - w / 2), x1 = Math.min(xr[1], b.z + w / 2);
+      if (x1 <= x0 || b.h < 1e-4) return;
+      svg += `<rect class="bar" x="${sx(x0).toFixed(1)}" y="${sy(b.h).toFixed(1)}" width="${(sx(x1) - sx(x0)).toFixed(1)}" height="${(sy(0) - sy(b.h)).toFixed(1)}"/>`;
+    });
+    svg += curve(phi, xr, yr, null);
+    cP.innerHTML = svg;
+    const exact = bars.filter(b => Math.abs(b.z) <= 1.96).reduce((a, b) => a + b.q, 0);
+    cRead.innerHTML = `<span>σ(S<sub>n</sub>) = √(np(1−p)) = <b>${fmt(s)}</b></span><span>P(|Z<sub>n</sub>| ≤ 1,96) exacte = <b>${fmt(exact * 100, 1)} %</b></span><span>valeur limite : <b>95,0 %</b></span>`;
+  }
+  nIn.addEventListener('input', drawCLT); pIn.addEventListener('input', drawCLT);
+  drawCLT();
+})();
+</script>
+
+</body>
+</html>
