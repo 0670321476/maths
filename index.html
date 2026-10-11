@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fiches de maths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #f4f6fa; --surface: #ffffff; --ink: #17213a; --muted: #59627a;
+  --line: #dde2ec; --accent: #c8304a;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0f1421; --surface: #171d2d; --ink: #e5e9f3; --muted: #9aa3ba; --line: #2a3247; --accent: #ff6b84; }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+}
+main { max-width: 42rem; margin: 0 auto; padding: 3rem 16px 4rem; }
+h1 {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800; font-size: clamp(2rem, 6vw, 2.75rem); line-height: 1.1; margin: 0 0 .5rem;
+}
+p.lead { color: var(--muted); margin: 0 0 2rem; }
+ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+a.card {
+  display: block; padding: 1rem 1.25rem; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  color: inherit; text-decoration: none; transition: border-color .15s, transform .15s;
+}
+a.card:hover, a.card:focus-visible { border-color: var(--accent); transform: translateY(-1px); }
+.card strong { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.15rem; display: block; }
+.card span { color: var(--muted); font-size: .95rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Fiches de maths</h1>
+  <p class="lead">Fiches de révision, une par chapitre.</p>
+  <ul>
+    <li>
+      <a class="card" href="fiche-pbs1.html">
+        <strong>PBS 1 — Variables à densité</strong>
+        <span>Densité, espérance, variance, pièges classiques</span>
+      </a>
+    </li>
+  </ul>
+</main>
+</body>
+</html>
